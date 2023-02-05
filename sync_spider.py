@@ -31,17 +31,20 @@ def spider(url: str, method: str = 'get', file_name: str = 'index.html', save: b
         # 3)encode and decode again
         # return response.text.encoding('ISO-8859-1').decoding(current_file_encoding: str)
         if save:
-            open('download/' + file_name, 'w', encoding='utf-8').write(response.text)
+            with open('download/' + file_name, 'w', encoding='utf-8') as fp:
+                fp.write(response.text)
             return None
         return response.text
     elif suffix == 'json':
         if save:
-            json.dump(obj=response.json(), fp=open('download/' + file_name, 'w', encoding='utf-8'), ensure_ascii=False)
+            with open('download/' + file_name, 'w', encoding='utf-8') as fp:
+                json.dump(obj=response.json(), fp=fp, ensure_ascii=False)
             return None
         return response.json()
     elif suffix == 'rar' or suffix == 'jpg' or suffix == 'jpeg' or suffix == 'png':
         if save:
-            open('download/' + file_name, 'wb').write(response.content)
+            with open('download/' + file_name, 'wb') as fp:
+                fp.write(response.content)
             return None
         return response.content
 
